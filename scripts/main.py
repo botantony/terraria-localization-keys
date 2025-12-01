@@ -4,8 +4,9 @@
 import json
 import os
 
-input_dir = 'files'
-output_dir = 'output'
+input_dir = "files"
+output_dir = "output"
+
 
 def process_text(filename: str, input: str) -> str:
     json_object = json.loads(input)
@@ -13,8 +14,11 @@ def process_text(filename: str, input: str) -> str:
     for primaryKey, d in json_object.items():
         new_json_object[primaryKey] = {}
         for secondaryKey in d:
-            new_json_object[primaryKey][secondaryKey] = f"{filename}.{primaryKey}.{secondaryKey}"
+            new_json_object[primaryKey][secondaryKey] = (
+                f"{filename}.{primaryKey}.{secondaryKey}"
+            )
     return json.dumps(new_json_object, sort_keys=True, indent=4)
+
 
 if __name__ == "__main__":
     os.makedirs(output_dir, exist_ok=True)
@@ -25,12 +29,12 @@ if __name__ == "__main__":
         output_path = os.path.join(output_dir, filename)
 
         if os.path.isfile(input_path):
-            with open(input_path, 'r', encoding='utf-8') as infile:
+            with open(input_path, "r", encoding="utf-8") as infile:
                 content = infile.read()
 
             processed = process_text(".".join(filename.split(".")[:-1]), content)
 
-            with open(output_path, 'w', encoding='utf-8') as outfile:
+            with open(output_path, "w", encoding="utf-8") as outfile:
                 outfile.write(processed)
 
     print("\nDone!")
